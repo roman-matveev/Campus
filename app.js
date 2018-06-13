@@ -1,31 +1,15 @@
 var express    = require("express"),
-    app        = express(),
     bodyParser = require("body-parser"),
-    mongoose   = require("mongoose");
+    mongoose   = require("mongoose"),
+    app        = express();
+
+var Campground = require('./models/campground'),
+    seedDB     = require('./seeds');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect("mongodb://localhost/campus");
-
-var cgSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    desc: String,
-});
-
-var Campground = mongoose.model("Campground", cgSchema);
-// Campground.create({
-//     name: "Granite Hill",
-//     image: "https://pixabay.com/get/e837b1072af4003ed1584d05fb1d4e97e07ee3d21cac104497f8c77ca2eabcbe_340.jpg",
-//     desc: "This is a giant granite hill."
-// }, function(err, campground) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("Campground created:");
-//         console.log(campground);
-//     }
-// });
+seedDB();
 
 app.get("/", function(req, res) {
     res.render("home");
@@ -61,12 +45,14 @@ app.get("/campgrounds/new", function(req, res) {
 });
 
 app.get("/campgrounds/:id", function(req, res) {
-    Campground.findById(req.params.id, function(err, foundCampground) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render("show", {campground:foundCampground});
-        }
+    Campground.findById(req.params.id).populate("comments").exec(
+        function(err, foundCampground) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(foundCampground);
+                res.render("show", {campground:foundCampground});
+            }
     });
 });
 
