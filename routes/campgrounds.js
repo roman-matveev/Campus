@@ -1,7 +1,8 @@
-var express = require('express'),
-    router  = express.Router();
+var express    = require('express'),
+    router     = express.Router();
 
-var Campground = require('../models/campground');
+var Campground = require('../models/campground'),
+    middleware = require('../middleware');
 
 router.get("/", function(req, res) {
     Campground.find({}, function(err, allCampgrounds) {
@@ -13,15 +14,16 @@ router.get("/", function(req, res) {
     });
 });
 
-router.get("/new", function(req, res) {
+router.get("/new", middleware.isLoggedIn, function(req, res) {
     res.render("campgrounds/new");
 });
 
-router.post("/", function(req, res) {
-    var name = req.body.name;
-    var image = req.body.image;
-    var desc = req.body.desc;
-    var newCampground = {name: name, image: image, desc: desc};
+router.post("/", middleware.isLoggedIn, function(req, res) {
+    var name          = req.body.name,
+        image         = req.body.image,
+        desc          = req.body.desc,
+        author        = {id: req.user._id, username: req.user.username},
+        newCampground = {name: name, image: image, desc: desc, author: author};
 
     Campground.create(newCampground, function(err, createdCampground) {
         if (err) {
@@ -38,9 +40,34 @@ router.get("/:id", function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                console.log(foundCampground);
                 res.render("campgrounds/show", {campground: foundCampground});
             }
+    });
+});
+
+router.get("/:id/edit", middleware.isCampgroundAuthor, function(req, res) {
+    Campground.findById(req.params.id, function(err, foundCampground) {
+        res.render("campgrounds/edit", {campground: foundCampground});
+    });
+});
+
+router.put("/:id", middleware.isCampgroundAuthor, function(req, res) {
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground) {
+        if (err) {
+            res.redirect("/campgrounds");
+        } else {
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
+router.delete("/:id", middleware.isCampgroundAuthor, function(req, res) {
+    Campground.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+            res.redirect("/campgrounds");
+        } else {
+            res.redirect("/campgrounds");
+        }
     });
 });
 

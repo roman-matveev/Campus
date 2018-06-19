@@ -4,6 +4,7 @@ var express               = require('express'),
     passport              = require('passport'),
     LocalStrategy         = require('passport-local'),
     passportLocalMongoose = require('passport-local-mongoose'),
+    methodOverride        = require('method-override'),
     app                   = express();
 
 var Campground       = require('./models/campground'),
@@ -18,7 +19,8 @@ mongoose.connect("mongodb://localhost/campus");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
-seedDB();
+app.use(methodOverride("_method"));
+// seedDB();
 
 app.use(require('express-session') ({
     secret: ",F[bU,W+9PHy/4jYBrMe",
