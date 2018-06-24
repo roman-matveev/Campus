@@ -1,16 +1,42 @@
-<% include ./partials/header %>
-
-<div class="container">
-    <header class="jumbotron">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Campus</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/home.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    </head>
+    <body>
         <div class="container">
+            <% if (error && error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <% if (success && success.length > 0) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>
+        </div>
+
+        <div id="landing-header">
             <% if (!currentUser) { %>
-                <p>Welcome, stranger!</p>
+                <h1>Welcome to Campus!</h1>
             <% } else { %>
-                <p>Welcome, <a href="#"><%= currentUser.username %></a>!</p>
+                <h1>Welcome, <a style="text-decoration: none; color: inherit;" href="#"><%= currentUser.username %></a>!</h1>
             <% } %>
             <p><a class="btn btn-primary btn-lg"href="/campgrounds">View all campgrounds</a></p>
         </div>
-    </header>
-</div>
+
+        <ul class="slideshow">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
 
 <% include ./partials/footer %>
