@@ -5,6 +5,13 @@ var cgSchema = new mongoose.Schema({
     image: String,
     desc: String,
     price: String,
+    loc: String,
+    lat: Number,
+    lng: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

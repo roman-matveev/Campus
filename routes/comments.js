@@ -68,6 +68,7 @@ router.put("/:comment_id", middleware.isCommentAuthor, function(req, res) {
 router.delete("/:comment_id", middleware.isCommentAuthor, function(req, res) {
     Comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if (err) {
+            req.flash("error", "Comment not found.");
             res.redirect("back");
         } else {
             res.redirect("/campgrounds/" + req.params.id);

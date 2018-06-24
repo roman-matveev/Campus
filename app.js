@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var express               = require('express'),
     bodyParser            = require('body-parser'),
     mongoose              = require('mongoose'),
@@ -8,13 +10,13 @@ var express               = require('express'),
     flash                 = require('connect-flash'),
     app                   = express();
 
-var Campground       = require('./models/campground'),
-    Comment          = require('./models/comment'),
-    User             = require('./models/user'),
-    indexRoutes      = require('./routes/index'),
-    campgroundRoutes = require('./routes/campgrounds'),
-    commentRoutes    = require('./routes/comments'),
-    seedDB           = require('./seeds');
+var Campground            = require('./models/campground'),
+    Comment               = require('./models/comment'),
+    User                  = require('./models/user'),
+    indexRoutes           = require('./routes/index'),
+    campgroundRoutes      = require('./routes/campgrounds'),
+    commentRoutes         = require('./routes/comments'),
+    seedDB                = require('./seeds');
 
 mongoose.connect("mongodb://localhost/campus");
 app.set("view engine", "ejs");
@@ -29,6 +31,8 @@ app.use(require('express-session') ({
     resave: false,
     saveUninitialized: false
 }));
+
+app.locals.moment = require('moment');
 
 app.use(passport.initialize());
 app.use(passport.session());
