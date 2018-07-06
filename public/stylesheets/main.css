@@ -19,6 +19,12 @@
     width: 100%;
 }
 
+.avatar img {
+    height: auto;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .col-md-12 hr {
     border: 0;
 }
