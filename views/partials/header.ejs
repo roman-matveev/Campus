@@ -34,7 +34,7 @@
                             <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Register</a></li>
                             <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                         <% } else { %>
-                            <li><a href="#"><strong><%= currentUser.username %></strong></a></li>
+                            <li><a href="/users/<%= currentUser.id %>"><strong><%= currentUser.username %></strong></a></li>
                             <li><a href="/logout">Logout</a></li>
                         <% } %>
                     </ul>

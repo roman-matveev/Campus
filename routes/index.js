@@ -56,8 +56,6 @@ router.get("/logout", function(req, res) {
     res.redirect("/campgrounds");
 });
 
-// -----
-
 router.get('/forgot', function(req, res) {
     res.render('forgot');
 });
@@ -71,9 +69,7 @@ router.post('/forgot', function(req, res, next) {
             });
         },
         function(token, done) {
-            User.findOne({
-                email: req.body.email
-            }, function(err, user) {
+            User.findOne({email: req.body.email}, function(err, user) {
                 if (!user) {
                     req.flash('error', 'No account with that email address exists.');
                     return res.redirect('/forgot');
@@ -90,11 +86,9 @@ router.post('/forgot', function(req, res, next) {
         function(token, user, done) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
-                auth: {
-                    user: 'anicefakeemail@gmail.com',
-                    pass: process.env.GMAILPW
-                }
+                auth: {user: 'anicefakeemail@gmail.com', pass: process.env.GMAILPW}
             });
+
             var mailOptions = {
                 to: user.email,
                 from: 'anicefakeemail@gmail.com',
@@ -104,6 +98,7 @@ router.post('/forgot', function(req, res, next) {
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
             };
+
             smtpTransport.sendMail(mailOptions, function(err) {
                 req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                 done(err, 'done');
@@ -124,10 +119,7 @@ router.get('/reset/:token', function(req, res) {
         if (!user) {
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('/forgot');
-        }
-        res.render('reset', {
-            token: req.params.token
-        });
+        } res.render('reset', {token: req.params.token});
     });
 });
 
@@ -142,6 +134,7 @@ router.post('/reset/:token', function(req, res) {
                     req.flash('error', 'Password reset token is invalid or has expired.');
                     return res.redirect('back');
                 }
+
                 if (req.body.password === req.body.confirm) {
                     user.setPassword(req.body.password, function(err) {
                         user.resetPasswordToken = undefined;
@@ -162,11 +155,9 @@ router.post('/reset/:token', function(req, res) {
         function(user, done) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
-                auth: {
-                    user: 'anicefakeemail@gmail.com',
-                    pass: process.env.GMAILPW
-                }
+                auth: {user: 'anicefakeemail@gmail.com', pass: process.env.GMAILPW}
             });
+
             var mailOptions = {
                 to: user.email,
                 from: 'anicefakeemail@mail.com',
@@ -174,6 +165,7 @@ router.post('/reset/:token', function(req, res) {
                 text: 'Hello,\n\n' +
                     'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
             };
+
             smtpTransport.sendMail(mailOptions, function(err) {
                 req.flash('success', 'Success! Your password has been changed.');
                 done(err);
@@ -183,8 +175,6 @@ router.post('/reset/:token', function(req, res) {
         res.redirect('/campgrounds');
     });
 });
-
-// -----
 
 router.get("/users/:id", function(req, res) {
     User.findById(req.params.id, function(err, foundUser) {

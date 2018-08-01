@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var cgSchema = new mongoose.Schema({
     name: String,
     image: String,
+    imageId: String,
     desc: String,
     price: String,
     loc: String,
