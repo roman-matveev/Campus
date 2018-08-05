@@ -18,7 +18,7 @@ var Campground            = require('./models/campground'),
     commentRoutes         = require('./routes/comments'),
     seedDB                = require('./seeds');
 
-mongoose.connect(DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
