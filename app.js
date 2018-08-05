@@ -53,6 +53,4 @@ app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 var port = process.env.PORT || 8000;
-app.listen(port, function() {
-    console.log("Running server on port 8000.");
-});
+app.listen(port, function() {});
