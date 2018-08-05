@@ -18,7 +18,9 @@ var Campground            = require('./models/campground'),
     commentRoutes         = require('./routes/comments'),
     seedDB                = require('./seeds');
 
-mongoose.connect("mongodb://localhost/campus");
+// mongoose.connect("mongodb://localhost/campus");
+mongoose.connect("mongodb://roman:campus1@ds213612.mlab.com:13612/campus");
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
