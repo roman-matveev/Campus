@@ -22,13 +22,13 @@
             <% } %>
         </div>
 
-        <div id="landing-header">
+        <div class="landing-header">
             <% if (!currentUser) { %>
                 <h1>Welcome to Campus!</h1>
             <% } else { %>
-                <h1>Welcome, <a style="text-decoration: none; color: inherit;" href="#"><%= currentUser.username %></a>!</h1>
+                <h1>Welcome, <a href="/users/<%= currentUser.id %>"><%= currentUser.username %></a>!</h1>
             <% } %>
-            <p><a class="btn btn-primary btn-lg"href="/campgrounds">View all campgrounds</a></p>
+            <p><a class="btn btn-primary btn-lg" href="/campgrounds">View all campgrounds</a></p>
         </div>
 
         <ul class="slideshow">

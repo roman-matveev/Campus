@@ -18,11 +18,11 @@ router.get("/register", function(req, res) {
 
 router.post("/register", function(req, res) {
     var newUsername = new User({
-        username: req.body.username,
+        username : req.body.username,
         firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        avatar: req.body.avatar
+        lastName : req.body.lastName,
+        email    : req.body.email,
+        avatar   : req.body.avatar
     }),
         newPassword = req.body.password;
 
@@ -75,7 +75,7 @@ router.post('/forgot', function(req, res, next) {
                     return res.redirect('/forgot');
                 }
 
-                user.resetPasswordToken = token;
+                user.resetPasswordToken   = token;
                 user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
                 user.save(function(err) {
@@ -113,7 +113,7 @@ router.post('/forgot', function(req, res, next) {
 
 router.get('/reset/:token', function(req, res) {
     User.findOne({
-        resetPasswordToken: req.params.token,
+        resetPasswordToken  : req.params.token,
         resetPasswordExpires: {$gt: Date.now()}
     }, function(err, user) {
         if (!user) {
@@ -127,7 +127,7 @@ router.post('/reset/:token', function(req, res) {
     async.waterfall([
         function(done) {
             User.findOne({
-                resetPasswordToken: req.params.token,
+                resetPasswordToken  : req.params.token,
                 resetPasswordExpires: {$gt: Date.now()}
             }, function(err, user) {
                 if (!user) {
@@ -137,7 +137,7 @@ router.post('/reset/:token', function(req, res) {
 
                 if (req.body.password === req.body.confirm) {
                     user.setPassword(req.body.password, function(err) {
-                        user.resetPasswordToken = undefined;
+                        user.resetPasswordToken   = undefined;
                         user.resetPasswordExpires = undefined;
 
                         user.save(function(err) {

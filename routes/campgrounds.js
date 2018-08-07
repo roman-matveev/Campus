@@ -18,7 +18,7 @@ var multer = require('multer'),
         filename: function(req, file, callback) {
             callback(null, Date.now() + file.originalname);
         }
-});
+    });
 
 var imageFilter = function(req, file, err) {
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
@@ -83,9 +83,8 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
             loc = geo[0].formattedAddress;
 
         cloudinary.uploader.upload(req.file.path, function(result) {
-            var image = result.secure_url,
+            var image   = result.secure_url,
                 imageId = result.public_id;
-
 
             var newCampground = {name: name, image: image, imageId: imageId, desc: desc, price: price, author: author, lat: lat, lng: lng, loc: loc};
 
@@ -134,17 +133,18 @@ router.put("/:id", middleware.isCampgroundAuthor, upload.single('image'), functi
                     res.redirect("back");
                 }
             }
+
             geocoder.geocode(req.body.loc, function(err, geo) {
                 if (err || !geo.length) {
                     req.flash("error", err.message);
                     return res.redirect("back");
                 }
 
-                req.body.lat = geo[0].latitude;
-                req.body.lng = geo[0].longitude;
-                req.body.loc = geo[0].formattedAddress;
-                campground.name = req.body.name;
-                campground.desc = req.body.desc;
+                req.body.lat     = geo[0].latitude;
+                req.body.lng     = geo[0].longitude;
+                req.body.loc     = geo[0].formattedAddress;
+                campground.name  = req.body.name;
+                campground.desc  = req.body.desc;
                 campground.price = req.body.price;
                 campground.save();
                 res.redirect("/campgrounds/" + campground._id);

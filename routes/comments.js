@@ -26,7 +26,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    comment.author.id = req.user._id;
+                    comment.author.id       = req.user._id;
                     comment.author.username = req.user.username;
                     comment.save();
                     campground.comments.push(comment);
